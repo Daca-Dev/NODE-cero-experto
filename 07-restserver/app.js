@@ -1,5 +1,5 @@
 require('dotenv').config();
-const Server = require('./models/Server.class');
+const Server = require('./models/server.class');
 
 
 const server = new Server();

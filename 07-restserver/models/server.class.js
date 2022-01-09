@@ -3,6 +3,7 @@ const { response } = require('express');
 const express = require('express');
 const cors = require('cors');
 
+const { connectDB } = require('./../database/config');
 
 class Server {
 
@@ -10,6 +11,10 @@ class Server {
         this.app = express();
         this.port = process.env.PORT;
         this.usersPath = '/api/users';
+
+        // db connection
+        this.connectWithDB();
+
         // middlewares
         this.middlewares();
 
@@ -25,6 +30,12 @@ class Server {
         // add public directory
         this.app.use( express.static('public') );
     }
+
+    async connectWithDB() {
+        await connectDB();
+        console.log('Connection with DB success');
+    }
+
 
     routes() {
         this.app.use( this.usersPath, require('../routes/users') );
