@@ -2,13 +2,21 @@ const { Router } = require('express');
 const { check, param } = require('express-validator');
 
 const { usersGet, usersPost, usersPut, usersDelete } = require('../controllers/users');
-const { validateFields } = require('../middlewares/field-validation');
 const { validRole, uniqueEmail, userIdExist } = require('./../helpers/db-validators');
+
+// const { validateFields } = require('../middlewares/field-validation');
+// const { validateJWT } = require('../middlewares/jwt-validation');
+// const { validateRole, haveRole } = require('../middlewares/role-validation');
+const { validateFields, validateJWT, validateRole, haveRole} = require('../middlewares');
 
 const router = Router();
 
 
-router.get('/', usersGet );
+router.get('/', [
+    validateJWT,
+    // validateRole,
+    haveRole('ADMIN_ROLE', 'SALES_ROLE'),
+],usersGet );
 
 router.post('/', [ // if we use thre arguments, the second one is an array of validators
         check('name', 'The field is required').not().isEmpty(),

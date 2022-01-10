@@ -1,5 +1,4 @@
 
-const { response } = require('express');
 const express = require('express');
 const cors = require('cors');
 
@@ -10,7 +9,9 @@ class Server {
     constructor() {
         this.app = express();
         this.port = process.env.PORT;
+
         this.usersPath = '/api/users';
+        this.authPath = '/api/auth';
 
         // db connection
         this.connectWithDB();
@@ -39,6 +40,7 @@ class Server {
 
     routes() {
         this.app.use( this.usersPath, require('../routes/users') );
+        this.app.use( this.authPath, require('../routes/auth') );
     }
 
     listen() {
